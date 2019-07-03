@@ -30,8 +30,15 @@ try:
         os.system('clear')
         parsed_json = r.json()
 
-#		Uncomment to see the JSON return by the unit
-#       print (parsed_json)
+        # Uncomment to see the JSON return by the unit
+        # print (parsed_json)
+
+        iStatusCode = int(parsed_json['status']['code'])
+        cszStatusCode = parsed_json['status']['text']
+
+        if (iStatusCode != 0):
+            print(cszStatusCode)
+            exit(3)
 
         count = int(parsed_json['count'])
         cszTimeStamp = parsed_json['timestamp']
@@ -43,9 +50,6 @@ try:
         print("----------------------")
         print("count %d" % (count))
         print("Range lastmod return from %s to %s" % (parsed_json['SDRANGE'], parsed_json['EDRANGE']))
-
-        iStatusCode = parsed_json['status']['code']
-        cszStatusCode = parsed_json['status']['text']
 
         uid = []
 
@@ -102,7 +106,7 @@ try:
 
                 if ((int(tempdata)) > iTotalEvents):
                     print("Invalid choice to large.")
-                    exit(1)
+                    exit(2)
 
                 cszTemp = ("&format=json&uid=%d&values=1&text=1" % (uid[(int(tempdata) - 1)]))
 
