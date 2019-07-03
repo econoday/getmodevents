@@ -20,6 +20,7 @@ BASE_PATH_DETAILS = "/api/v1/geteventdetails?token="+TOKEN
 
 BASE_PATH_LASTMOD = BASE_PATH_LASTMOD+"&startd="+(datetime.datetime.today().strftime('%m-%d-%Y'))
 
+detailformat = "xml"   # this can be either the value xml or json
 
 def mid(s, offset, amount):
     return s[offset-1:offset+amount-1]
@@ -108,11 +109,15 @@ try:
                     print("Invalid choice to large.")
                     exit(2)
 
-                cszTemp = ("&format=json&uid=%d&values=1&text=1" % (uid[(int(tempdata) - 1)]))
+                cszTemp = ("&format=%s&uid=%d&values=1&text=1" % (detailformat, uid[(int(tempdata) - 1)]))
 
                 r = requests.get(SITE_NAME+BASE_PATH_DETAILS+cszTemp, verify=True)
+                print(SITE_NAME+BASE_PATH_DETAILS+cszTemp)
                 if (r.status_code == 200):
-                    # parsed_json = r.json()
+                    if (detailformat == "xml"):
+                        parsed_json = r.text
+                    else:
+                        parsed_json = r.json()
 
                     print (parsed_json)
                     # print(parsed_json['events'][0]['FREQUENCY'])
